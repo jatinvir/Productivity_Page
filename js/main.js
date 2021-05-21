@@ -81,8 +81,10 @@ function getName() {
 // Set Name
 function setName(e) {
     if (e.type == "keypress"){
+        // Enter Key
         if(e.which == 13 || e.keyCode == 13) {
             localStorage.setItem("names", e.target.innerText);
+            // No new line
             names.blur();  
         }
     } else {
@@ -115,14 +117,24 @@ function setFocus(e) {
 // Weather
 const p = document.querySelector("#weather-data p");
 
+// Object to hold data
 let openWeather = {}
 
+// Request data from server
 let xhr = new XMLHttpRequest()
+
+// Get data from url
 xhr.open("GET", `http://api.openweathermap.org/data/2.5/weather?q=Hamilton,ca&appid=968f162b48ab5e9cb32c54113ea5d59e&units=metric`)
+
+// text is type of data in response
 xhr.responseType = "text"
+
+//Do when loaded
 xhr.addEventListener("load", function(){
+    // 200 for success
     if (xhr.status === 200){
         console.log("Works xhr.status")
+        // JSON.parse to have it look like a class
         openWeather = JSON.parse(xhr.responseText)
         populateWeatherInfo(openWeather, p)
     } else {
@@ -130,11 +142,14 @@ xhr.addEventListener("load", function(){
     }
 }, false)
 
+// request to server
 xhr.send();
 
 // update page contents
 function populateWeatherInfo(openWeather, p){
+    // name is in API info
     const location = openWeather.name
+    // round as it's a decimal in API
     const temp = Math.round(openWeather.main.temp)
 
     const str = `${location} ${temp}°`
@@ -147,7 +162,7 @@ names.addEventListener("blur", setName);
 focus.addEventListener("keypress", setFocus);
 focus.addEventListener("blur", setFocus);
 
-// Run
+// Run Functions
 shwoTime();
 setBgGreet();
 getName();
